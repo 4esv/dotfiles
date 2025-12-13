@@ -23,7 +23,7 @@ git clone --recurse-submodules https://github.com/4esv/dotfiles.git ~/dotfiles
 |---------|-------------|
 | `zsh` | Zsh config with Oh My Zsh, aliases, functions |
 | `git` | Git config and global ignore patterns |
-| `nvim` | Neovim config ([my fork](https://github.com/4esv/nvim-config)) |
+| `nvim` | Neovim config ([my fork of NormalNvim](https://github.com/4esv/nvim-config)) |
 | `ghostty` | Ghostty terminal with custom shaders |
 | `starship` | Minimal prompt with GitHub Dark theme |
 | `claude` | Claude Code preferences |
