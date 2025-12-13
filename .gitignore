@@ -1,0 +1,25 @@
+# Secrets
+*.secrets
+.zshrc.secrets
+
+# Claude local settings
+**/settings.local.json
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Thumbnails
+Thumbs.db
+
+# Local overrides
+*.local
+.zshrc.local

@@ -1,0 +1,48 @@
+#------------------#
+# General Settings #
+#------------------#
+# font-family = "0xProto Nerd Font"
+config-default-files = false
+shell-integration = zsh
+
+#---------------#
+# Clipboard     #
+#---------------#
+clipboard-read = allow
+clipboard-write = allow
+copy-on-select = false
+
+#---------------#
+# Appearance    #
+#---------------#
+background-opacity = 1
+selection-invert-fg-bg = true
+cursor-opacity = 0.8
+
+window-step-resize = true
+window-padding-x = 25
+window-padding-y = 25
+
+#---------------#
+# Shaders       #
+#---------------#
+custom-shader-animation = always
+
+# Backgrounds
+custom-shader = shaders/Sky.glsl
+# custom-shader = shaders/Observatory.glsl
+# custom-shader = shaders/Linescape.glsl
+# custom-shader = shaders/Matrix.glsl
+# custom-shader = shaders/Noise.glsl
+# custom-shader = shaders/Llamels.glsl
+# custom-shader = shaders/Landscape.glsl
+
+# Effects
+# custom-shader = shaders/BetterCRT.glsl
+# custom-shader = shaders/Fireworks.glsl
+# custom-shader = shaders/Glitch.glsl
+
+#---------------#
+# Keybindings   #
+#---------------#
+keybind = shift+enter=text:\x1b\r
