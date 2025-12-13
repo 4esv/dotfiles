@@ -20,6 +20,6 @@
 # Thumbnails
 Thumbs.db
 
-# Local overrides
-*.local
+# Local overrides (files only)
 .zshrc.local
+.gitconfig.local

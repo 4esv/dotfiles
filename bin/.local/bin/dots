@@ -1,0 +1,348 @@
+#!/usr/bin/env bash
+# =============================================================================
+# dots - Dotfiles management CLI
+# =============================================================================
+
+set -e
+
+DOTFILES_DIR="$HOME/dotfiles"
+PACKAGES=(zsh git ghostty starship claude nvim bin)
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+# =============================================================================
+# Helper Functions
+# =============================================================================
+
+info() {
+    echo -e "${BLUE}${BOLD}::${NC} $1"
+}
+
+success() {
+    echo -e "${GREEN}${BOLD}✓${NC} $1"
+}
+
+warn() {
+    echo -e "${YELLOW}${BOLD}!${NC} $1"
+}
+
+error() {
+    echo -e "${RED}${BOLD}✗${NC} $1"
+}
+
+# =============================================================================
+# Commands
+# =============================================================================
+
+cmd_help() {
+    cat << EOF
+${BOLD}dots${NC} - Dotfiles management CLI
+
+${BOLD}USAGE${NC}
+    dots <command> [options]
+
+${BOLD}COMMANDS${NC}
+    install         Full setup: install deps, link configs, setup shell
+    sync            Pull latest changes and re-link configs
+    update          Commit and push local changes to remote
+    link [pkg]      Create symlinks (all packages or specific one)
+    unlink [pkg]    Remove symlinks (all packages or specific one)
+    status          Show git status and symlink health
+    brew            Install/update Homebrew packages from Brewfile
+    edit            Open dotfiles in editor
+
+${BOLD}PACKAGES${NC}
+    ${PACKAGES[*]}
+
+${BOLD}EXAMPLES${NC}
+    dots install        # First-time setup on a new machine
+    dots sync           # Pull latest and re-link
+    dots update         # Push your changes
+    dots link zsh       # Link only zsh configs
+    dots status         # Check what's changed
+
+EOF
+}
+
+cmd_install() {
+    info "Starting full dotfiles installation..."
+    echo
+
+    # Check for Homebrew
+    if ! command -v brew &> /dev/null; then
+        info "Installing Homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        success "Homebrew already installed"
+    fi
+
+    # Install stow if not present
+    if ! command -v stow &> /dev/null; then
+        info "Installing GNU Stow..."
+        brew install stow
+    else
+        success "GNU Stow already installed"
+    fi
+
+    # Install packages from Brewfile
+    cmd_brew
+
+    # Install Oh My Zsh if not present
+    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+        info "Installing Oh My Zsh..."
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    else
+        success "Oh My Zsh already installed"
+    fi
+
+    # Install zsh plugins
+    local ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
+
+    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+        info "Installing zsh-autosuggestions..."
+        git clone https://github.com/zsh-users/zsh-autosuggestions "$ZSH_CUSTOM/plugins/zsh-autosuggestions"
+    else
+        success "zsh-autosuggestions already installed"
+    fi
+
+    if [ ! -d "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting" ]; then
+        info "Installing zsh-syntax-highlighting..."
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting "$ZSH_CUSTOM/plugins/zsh-syntax-highlighting"
+    else
+        success "zsh-syntax-highlighting already installed"
+    fi
+
+    # Initialize submodules
+    info "Initializing git submodules..."
+    cd "$DOTFILES_DIR"
+    git submodule update --init --recursive
+
+    # Link all packages
+    cmd_link
+
+    # Create secrets file template if it doesn't exist
+    if [ ! -f "$HOME/.zshrc.secrets" ]; then
+        info "Creating ~/.zshrc.secrets template..."
+        cat > "$HOME/.zshrc.secrets" << 'SECRETS'
+# =============================================================================
+# Secret Environment Variables (not version controlled)
+# =============================================================================
+# Add your API keys and secrets here:
+# export OPENAI_API_KEY="your-key-here"
+# export GITHUB_TOKEN="your-token-here"
+SECRETS
+        success "Created ~/.zshrc.secrets template"
+    fi
+
+    echo
+    success "Installation complete!"
+    echo
+    info "Next steps:"
+    echo "  1. Restart your terminal or run: source ~/.zshrc"
+    echo "  2. Edit ~/.zshrc.secrets to add your API keys"
+    echo "  3. Run 'dots macos' to apply macOS preferences (optional)"
+}
+
+cmd_sync() {
+    info "Syncing dotfiles..."
+    cd "$DOTFILES_DIR"
+
+    # Pull latest changes
+    info "Pulling latest changes..."
+    git pull --rebase
+
+    # Update submodules
+    info "Updating submodules..."
+    git submodule update --init --recursive
+
+    # Re-link configs
+    cmd_link
+
+    success "Sync complete!"
+}
+
+cmd_update() {
+    info "Updating dotfiles repository..."
+    cd "$DOTFILES_DIR"
+
+    # Show status
+    git status --short
+
+    echo
+    read -p "Commit message (or press Enter to skip): " msg
+
+    if [ -n "$msg" ]; then
+        git add -A
+        git commit -m "$msg"
+        info "Pushing to remote..."
+        git push
+        success "Changes pushed!"
+    else
+        warn "No commit message provided, skipping."
+    fi
+}
+
+cmd_link() {
+    local pkg="${1:-}"
+    cd "$DOTFILES_DIR"
+
+    if [ -n "$pkg" ]; then
+        # Link specific package
+        if [[ " ${PACKAGES[*]} " =~ " ${pkg} " ]]; then
+            info "Linking $pkg..."
+            stow -v -R -t "$HOME" "$pkg"
+            success "Linked $pkg"
+        else
+            error "Unknown package: $pkg"
+            echo "Available packages: ${PACKAGES[*]}"
+            exit 1
+        fi
+    else
+        # Link all packages
+        info "Linking all packages..."
+        for pkg in "${PACKAGES[@]}"; do
+            info "  Linking $pkg..."
+            stow -v -R -t "$HOME" "$pkg" 2>&1 | grep -v "^LINK:" || true
+        done
+        success "All packages linked"
+    fi
+}
+
+cmd_unlink() {
+    local pkg="${1:-}"
+    cd "$DOTFILES_DIR"
+
+    if [ -n "$pkg" ]; then
+        # Unlink specific package
+        if [[ " ${PACKAGES[*]} " =~ " ${pkg} " ]]; then
+            info "Unlinking $pkg..."
+            stow -v -D -t "$HOME" "$pkg"
+            success "Unlinked $pkg"
+        else
+            error "Unknown package: $pkg"
+            echo "Available packages: ${PACKAGES[*]}"
+            exit 1
+        fi
+    else
+        # Unlink all packages
+        info "Unlinking all packages..."
+        for pkg in "${PACKAGES[@]}"; do
+            stow -v -D -t "$HOME" "$pkg" 2>&1 | grep -v "^UNLINK:" || true
+        done
+        success "All packages unlinked"
+    fi
+}
+
+cmd_status() {
+    info "Dotfiles Status"
+    echo
+
+    cd "$DOTFILES_DIR"
+
+    # Git status
+    echo -e "${BOLD}Git Status:${NC}"
+    git status --short --branch
+    echo
+
+    # Symlink status
+    echo -e "${BOLD}Symlink Status:${NC}"
+    local all_ok=true
+
+    check_link() {
+        local target="$1"
+        local expected="$2"
+        if [ -L "$target" ]; then
+            local actual=$(readlink "$target")
+            if [[ "$actual" == *"$expected"* ]]; then
+                echo -e "  ${GREEN}✓${NC} $target"
+            else
+                echo -e "  ${YELLOW}!${NC} $target (points to: $actual)"
+                all_ok=false
+            fi
+        elif [ -e "$target" ]; then
+            echo -e "  ${YELLOW}!${NC} $target (exists but not a symlink)"
+            all_ok=false
+        else
+            echo -e "  ${RED}✗${NC} $target (missing)"
+            all_ok=false
+        fi
+    }
+
+    check_link "$HOME/.zshrc" "dotfiles/zsh"
+    check_link "$HOME/.zprofile" "dotfiles/zsh"
+    check_link "$HOME/.gitconfig" "dotfiles/git"
+    check_link "$HOME/.config/starship.toml" "dotfiles/starship"
+    check_link "$HOME/.config/ghostty" "dotfiles/ghostty"
+    check_link "$HOME/.config/nvim" "dotfiles/nvim"
+    check_link "$HOME/.claude/CLAUDE.md" "dotfiles/claude"
+
+    echo
+    if $all_ok; then
+        success "All symlinks healthy"
+    else
+        warn "Some symlinks need attention. Run 'dots link' to fix."
+    fi
+}
+
+cmd_brew() {
+    info "Installing Homebrew packages..."
+    cd "$DOTFILES_DIR"
+
+    if [ -f "Brewfile" ]; then
+        brew bundle --file=Brewfile
+        success "Homebrew packages installed"
+    else
+        warn "No Brewfile found"
+    fi
+}
+
+cmd_edit() {
+    cd "$DOTFILES_DIR"
+    ${EDITOR:-nvim} .
+}
+
+cmd_macos() {
+    if [ -f "$DOTFILES_DIR/.macos" ]; then
+        info "Applying macOS preferences..."
+        source "$DOTFILES_DIR/.macos"
+        success "macOS preferences applied. Some changes may require a restart."
+    else
+        warn "No .macos file found"
+    fi
+}
+
+# =============================================================================
+# Main
+# =============================================================================
+
+main() {
+    case "${1:-}" in
+        install)    cmd_install ;;
+        sync)       cmd_sync ;;
+        update)     cmd_update ;;
+        link)       cmd_link "${2:-}" ;;
+        unlink)     cmd_unlink "${2:-}" ;;
+        status)     cmd_status ;;
+        brew)       cmd_brew ;;
+        edit)       cmd_edit ;;
+        macos)      cmd_macos ;;
+        help|--help|-h|"")
+            cmd_help
+            ;;
+        *)
+            error "Unknown command: $1"
+            echo
+            cmd_help
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"
