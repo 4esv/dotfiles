@@ -8,32 +8,32 @@ set -e
 DOTFILES_DIR="$HOME/dotfiles"
 PACKAGES=(zsh git ghostty starship claude nvim bin)
 
-# Colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-BOLD='\033[1m'
-NC='\033[0m' # No Color
+# Colors (using $'...' for proper escape interpretation)
+RED=$'\033[0;31m'
+GREEN=$'\033[0;32m'
+YELLOW=$'\033[0;33m'
+BLUE=$'\033[0;34m'
+BOLD=$'\033[1m'
+NC=$'\033[0m' # No Color
 
 # =============================================================================
 # Helper Functions
 # =============================================================================
 
 info() {
-    echo -e "${BLUE}${BOLD}::${NC} $1"
+    printf '%s\n' "${BLUE}${BOLD}::${NC} $1"
 }
 
 success() {
-    echo -e "${GREEN}${BOLD}✓${NC} $1"
+    printf '%s\n' "${GREEN}${BOLD}✓${NC} $1"
 }
 
 warn() {
-    echo -e "${YELLOW}${BOLD}!${NC} $1"
+    printf '%s\n' "${YELLOW}${BOLD}!${NC} $1"
 }
 
 error() {
-    echo -e "${RED}${BOLD}✗${NC} $1"
+    printf '%s\n' "${RED}${BOLD}✗${NC} $1"
 }
 
 # =============================================================================
@@ -247,12 +247,12 @@ cmd_status() {
     cd "$DOTFILES_DIR"
 
     # Git status
-    echo -e "${BOLD}Git Status:${NC}"
+    printf '%s\n' "${BOLD}Git Status:${NC}"
     git status --short --branch
     echo
 
     # Symlink status
-    echo -e "${BOLD}Symlink Status:${NC}"
+    printf '%s\n' "${BOLD}Symlink Status:${NC}"
     local all_ok=true
 
     check_link() {
@@ -261,16 +261,16 @@ cmd_status() {
         if [ -L "$target" ]; then
             local actual=$(readlink "$target")
             if [[ "$actual" == *"$expected"* ]]; then
-                echo -e "  ${GREEN}✓${NC} $target"
+                printf '%s\n' "  ${GREEN}✓${NC} $target"
             else
-                echo -e "  ${YELLOW}!${NC} $target (points to: $actual)"
+                printf '%s\n' "  ${YELLOW}!${NC} $target (points to: $actual)"
                 all_ok=false
             fi
         elif [ -e "$target" ]; then
-            echo -e "  ${YELLOW}!${NC} $target (exists but not a symlink)"
+            printf '%s\n' "  ${YELLOW}!${NC} $target (exists but not a symlink)"
             all_ok=false
         else
-            echo -e "  ${RED}✗${NC} $target (missing)"
+            printf '%s\n' "  ${RED}✗${NC} $target (missing)"
             all_ok=false
         fi
     }
