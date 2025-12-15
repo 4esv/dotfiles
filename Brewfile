@@ -24,6 +24,10 @@ brew "fd"                   # Fast find alternative
 brew "eza"                  # Modern ls replacement
 brew "zoxide"               # Smarter cd command
 brew "tree"                 # Directory tree view
+brew "bat"                  # Better cat with syntax highlighting
+brew "tldr"                 # Simplified man pages
+brew "dust"                 # Better du (disk usage)
+brew "duf"                  # Better df (disk free)
 
 # -----------------------------------------------------------------------------
 # Development
@@ -31,6 +35,7 @@ brew "tree"                 # Directory tree view
 brew "gh"                   # GitHub CLI
 brew "git-delta"            # Better git diffs
 brew "git-lfs"              # Git large file storage
+brew "lazygit"              # Terminal UI for git
 brew "tmux"                 # Terminal multiplexer
 brew "jq"                   # JSON processor
 brew "yq"                   # YAML processor

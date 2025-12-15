@@ -44,6 +44,11 @@ plugins=(
   kubectl
   brew
   macos
+  gh
+  npm
+  node
+  sudo
+  copypath
   zsh-autosuggestions
   zsh-syntax-highlighting
   history-substring-search
@@ -156,6 +161,12 @@ alias pip='pip3'
 alias serve='python3 -m http.server'
 alias json='python3 -m json.tool'
 
+# Better cat with syntax highlighting
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat --paging=never'
+  alias catp='bat'  # bat with pager
+fi
+
 # =============================================================================
 # Functions
 # =============================================================================
@@ -210,6 +221,16 @@ function weather() {
 # NOTE: Initialize Starship prompt after Oh My Zsh to prevent conflicts
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
+fi
+
+# Zoxide: smarter cd that learns your habits (use 'z' instead of 'cd')
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
+# FZF: fuzzy finder keybindings (Ctrl+R history, Ctrl+T files, Alt+C cd)
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
 fi
 
 # =============================================================================
