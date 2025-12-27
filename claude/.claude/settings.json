@@ -1,0 +1,71 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/axel/.claude/scripts/notification.sh 'Claude Code' 'Awaiting your input'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write(*.py)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v ruff >/dev/null && ruff format \"$CLAUDE_FILE\" 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write(*.js)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write(*.ts)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write(*.tsx)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write(*.json)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "/Users/axel/.claude/scripts/statusline.sh"
+  },
+  "enabledPlugins": {
+    "compounding-engineering@every-marketplace": true
+  },
+  "alwaysThinkingEnabled": true,
+  "model": "opus"
+}
