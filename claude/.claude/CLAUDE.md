@@ -40,3 +40,22 @@ Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
 - Check for existing CLAUDE.md in project root for project-specific rules
 - Look for .editorconfig, pyproject.toml, package.json for style guides
 - Respect existing patterns in the codebase
+
+## Available Subagents
+Use these for specific workflows:
+- `code-simplifier` - Run after implementation to reduce complexity
+- `verify-app` - End-to-end verification (build, test, visual)
+- `build-validator` - Validate builds and quality gates
+- `code-architect` - Design features and review architecture
+
+## Chrome Extension
+The Chrome extension is available for visual verification. Use it to:
+- Open the app in browser and take screenshots
+- Test UI interactions and verify rendering
+- Iterate on visual bugs until they're fixed
+
+## Long-Running Tasks
+For autonomous work use `/ralph-loop` with clear completion criteria:
+```
+/ralph-loop "Task description. Output <promise>DONE</promise> when complete." --max-iterations 20 --completion-promise "DONE"
+```
