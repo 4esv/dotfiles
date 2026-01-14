@@ -1,9 +1,10 @@
 #------------------#
 # General Settings #
 #------------------#
-# font-family = "0xProto Nerd Font"
+font-family = "0xProto Nerd Font"
 config-default-files = false
 shell-integration = zsh
+term = xterm-256color
 
 #---------------#
 # Clipboard     #
@@ -30,12 +31,15 @@ custom-shader-animation = always
 
 # Backgrounds
 custom-shader = shaders/Sky.glsl
+# custom-shader = shaders/SunPendulum.glsl
 # custom-shader = shaders/Observatory.glsl
 # custom-shader = shaders/Linescape.glsl
 # custom-shader = shaders/Matrix.glsl
 # custom-shader = shaders/Noise.glsl
 # custom-shader = shaders/Llamels.glsl
 # custom-shader = shaders/Landscape.glsl
+# custom-shader = shaders/Iridescent.glsl
+# custom-shader = shaders/DeadPlanet.glsl
 
 # Effects
 # custom-shader = shaders/BetterCRT.glsl
