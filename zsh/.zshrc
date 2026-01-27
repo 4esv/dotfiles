@@ -220,6 +220,8 @@ function weather() {
 
 # NOTE: Initialize Starship prompt after Oh My Zsh to prevent conflicts
 if command -v starship >/dev/null 2>&1; then
+  # Clear Oh My Zsh's prompt before initializing Starship
+  unset PROMPT RPROMPT
   eval "$(starship init zsh)"
 fi
 
