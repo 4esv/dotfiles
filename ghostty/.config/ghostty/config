@@ -40,6 +40,7 @@ custom-shader = shaders/Sky.glsl
 # custom-shader = shaders/Landscape.glsl
 # custom-shader = shaders/Iridescent.glsl
 # custom-shader = shaders/DeadPlanet.glsl
+# custom-shader = shaders/Sunset.glsl
 
 # Effects
 # custom-shader = shaders/BetterCRT.glsl
@@ -50,3 +51,4 @@ custom-shader = shaders/Sky.glsl
 # Keybindings   #
 #---------------#
 keybind = shift+enter=text:\x1b\r
+keybind = cmd+`=toggle_window_float_on_top
