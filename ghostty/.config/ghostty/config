@@ -51,4 +51,5 @@ custom-shader = shaders/Sky.glsl
 # Keybindings   #
 #---------------#
 keybind = shift+enter=text:\x1b\r
-keybind = cmd+`=toggle_window_float_on_top
+keybind = cmd+~=toggle_window_float_on_top
+keybind = global:cmd+grave_accent=toggle_quick_terminal
