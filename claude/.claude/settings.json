@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/axel/.claude/scripts/notification.sh 'Claude Code' 'Awaiting your input'"
+            "command": "$HOME/.claude/scripts/notification.sh 'Claude Code' 'Awaiting your input'"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/Users/axel/.claude/scripts/autonomous-loop.sh"
+            "command": "$HOME/.claude/scripts/autonomous-loop.sh"
           }
         ]
       }
