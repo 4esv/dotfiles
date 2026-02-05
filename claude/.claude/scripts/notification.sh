@@ -5,7 +5,7 @@
 TITLE="${1:-Claude Code}"
 MESSAGE="${2:-Awaiting your input}"
 
-/Users/axel/.claude/ClawdNotifier.app/Contents/MacOS/terminal-notifier \
+"$HOME/.claude/ClawdNotifier.app/Contents/MacOS/terminal-notifier" \
     -title "$TITLE" \
     -message "$MESSAGE" \
     -sound "Blow" \

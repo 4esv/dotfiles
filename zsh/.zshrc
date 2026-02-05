@@ -7,7 +7,7 @@
 # Environment & Path Setup
 # =============================================================================
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$PATH:/Users/axel/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
 # Language environment
 export LANG=en_US.UTF-8

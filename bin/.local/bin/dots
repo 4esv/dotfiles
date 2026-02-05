@@ -53,6 +53,7 @@ ${BOLD}COMMANDS${NC}
     update          Commit and push local changes to remote
     link [pkg]      Create symlinks (all packages or specific one)
     unlink [pkg]    Remove symlinks (all packages or specific one)
+    fix-paths       Scan configs for hardcoded /Users/<name>/ paths
     status          Show git status and symlink health
     brew            Install/update Homebrew packages from Brewfile
     edit            Open dotfiles in editor
@@ -220,6 +221,49 @@ cmd_link() {
         done
         success "All packages linked"
     fi
+
+    # Check for hardcoded user paths after linking
+    fix_paths
+}
+
+fix_paths() {
+    local found=0
+
+    # NOTE: Scans stowed config files for hardcoded /Users/<username>/ paths
+    # that should use $HOME or ~ instead for portability across machines.
+    local files_to_scan=(
+        "$DOTFILES_DIR/zsh/.zshrc"
+        "$DOTFILES_DIR/claude/.claude/settings.json"
+    )
+
+    # Also scan all .sh scripts under claude
+    while IFS= read -r -d '' f; do
+        files_to_scan+=("$f")
+    done < <(find "$DOTFILES_DIR/claude/.claude/scripts" -name '*.sh' -print0 2>/dev/null)
+
+    for file in "${files_to_scan[@]}"; do
+        [ -f "$file" ] || continue
+        local matches
+        matches=$(grep -n '/Users/[^/]*/' "$file" 2>/dev/null || true)
+        if [ -n "$matches" ]; then
+            if [ "$found" -eq 0 ]; then
+                echo
+                warn "Hardcoded user paths detected:"
+            fi
+            found=1
+            echo "  ${YELLOW}${file#"$DOTFILES_DIR/"}${NC}"
+            while IFS= read -r line; do
+                echo "    $line"
+            done <<< "$matches"
+        fi
+    done
+
+    if [ "$found" -eq 1 ]; then
+        echo
+        warn "Replace /Users/<username>/ with \$HOME/ or ~ for portability."
+    elif [ "${1:-}" = "--verbose" ]; then
+        success "No hardcoded user paths found"
+    fi
 }
 
 cmd_unlink() {
@@ -336,6 +380,7 @@ main() {
         update)     cmd_update ;;
         link)       cmd_link "${2:-}" ;;
         unlink)     cmd_unlink "${2:-}" ;;
+        fix-paths)  fix_paths --verbose ;;
         status)     cmd_status ;;
         brew)       cmd_brew ;;
         edit)       cmd_edit ;;
