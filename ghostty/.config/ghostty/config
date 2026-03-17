@@ -17,6 +17,7 @@ copy-on-select = false
 # Appearance    #
 #---------------#
 background-opacity = 1
+background=16161d
 selection-invert-fg-bg = true
 cursor-opacity = 0.8
 
@@ -30,7 +31,7 @@ window-padding-y = 25
 custom-shader-animation = always
 
 # Backgrounds
-custom-shader = shaders/Sky.glsl
+# custom-shader = shaders/Sky.glsl
 # custom-shader = shaders/SunPendulum.glsl
 # custom-shader = shaders/Observatory.glsl
 # custom-shader = shaders/Linescape.glsl
@@ -41,6 +42,7 @@ custom-shader = shaders/Sky.glsl
 # custom-shader = shaders/Iridescent.glsl
 # custom-shader = shaders/DeadPlanet.glsl
 # custom-shader = shaders/Sunset.glsl
+# custom-shader = shaders/sunpath.glsl
 
 # Effects
 # custom-shader = shaders/BetterCRT.glsl
