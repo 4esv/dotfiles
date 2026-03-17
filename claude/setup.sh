@@ -23,6 +23,12 @@ for cmd in "$SCRIPT_DIR/.claude/commands"/*.md; do
     [ -f "$cmd" ] && ln -sf "$cmd" "$CLAUDE_DIR/commands/$(basename "$cmd")"
 done
 
+# Symlink skills
+echo "  → Linking skills..."
+for skill_dir in "$SCRIPT_DIR/.claude/skills"/*/; do
+    [ -d "$skill_dir" ] && ln -sfn "$skill_dir" "$CLAUDE_DIR/skills/$(basename "$skill_dir")"
+done
+
 # Copy scripts (not symlink, they need to be executable)
 echo "  → Installing scripts..."
 cp "$SCRIPT_DIR/.claude/scripts"/*.sh "$CLAUDE_DIR/scripts/"
