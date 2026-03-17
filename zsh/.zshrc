@@ -102,6 +102,9 @@ alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
+# Obsidian CLI shortcut
+alias o='obsidian'
+
 # Enhanced ls alternatives
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --color=auto --group-directories-first'
