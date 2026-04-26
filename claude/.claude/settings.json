@@ -1,106 +1,125 @@
 {
-  "alwaysThinkingEnabled": true,
-  "enabledPlugins": {
-    "claude-hud@claude-hud": true,
-    "compounding-engineering@every-marketplace": true,
-    "ralph-wiggum@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true
+  "permissions": {
+    "defaultMode": "auto"
   },
   "hooks": {
     "Notification": [
       {
+        "matcher": "permission_prompt",
         "hooks": [
           {
-            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" permission_prompt",
-            "type": "command"
+            "type": "command",
+            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" permission_prompt"
           }
-        ],
-        "matcher": "permission_prompt"
+        ]
       },
       {
+        "matcher": "idle_prompt",
         "hooks": [
           {
-            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" idle_prompt",
-            "type": "command"
+            "type": "command",
+            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" idle_prompt"
           }
-        ],
-        "matcher": "idle_prompt"
+        ]
       }
     ],
     "PostToolUse": [
       {
+        "matcher": "Write|Edit(*.py)",
         "hooks": [
           {
-            "command": "command -v ruff >/dev/null && ruff format \"$CLAUDE_FILE\" 2>/dev/null || true",
-            "type": "command"
+            "type": "command",
+            "command": "command -v ruff >/dev/null && ruff format \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
-        ],
-        "matcher": "Write|Edit(*.py)"
+        ]
       },
       {
+        "matcher": "Write|Edit(*.js)",
         "hooks": [
           {
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true",
-            "type": "command"
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
-        ],
-        "matcher": "Write|Edit(*.js)"
+        ]
       },
       {
+        "matcher": "Write|Edit(*.ts)",
         "hooks": [
           {
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true",
-            "type": "command"
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
-        ],
-        "matcher": "Write|Edit(*.ts)"
+        ]
       },
       {
+        "matcher": "Write|Edit(*.tsx)",
         "hooks": [
           {
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true",
-            "type": "command"
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
-        ],
-        "matcher": "Write|Edit(*.tsx)"
+        ]
       },
       {
+        "matcher": "Write|Edit(*.json)",
         "hooks": [
           {
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true",
-            "type": "command"
+            "type": "command",
+            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
-        ],
-        "matcher": "Write|Edit(*.json)"
+        ]
       }
     ],
     "Stop": [
       {
+        "matcher": "*",
         "hooks": [
           {
-            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" stop",
-            "type": "command"
+            "type": "command",
+            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" stop"
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "SubagentStop": [
       {
+        "matcher": "*",
         "hooks": [
           {
-            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" subagent_stop",
-            "type": "command"
+            "type": "command",
+            "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" subagent_stop"
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ]
   },
-  "skipDangerousModePermissionPrompt": true,
-  "statusLine": {
-    "command": "bash -c 'node \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)dist/index.js\"'",
-    "type": "command"
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "swift-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "telegram@claude-plugins-official": true,
+    "obsidian@obsidian-skills": true
   },
+  "extraKnownMarketplaces": {
+    "obsidian-skills": {
+      "source": {
+        "source": "github",
+        "repo": "kepano/obsidian-skills"
+      }
+    }
+  },
+  "alwaysThinkingEnabled": true,
+  "advisorModel": "opus",
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "editorMode": "vim",
+  "preferredNotifChannel": "ghostty",
+  "autoCompactEnabled": false,
+  "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
 }
