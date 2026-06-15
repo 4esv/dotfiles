@@ -31,7 +31,7 @@ window-padding-y = 25
 custom-shader-animation = always
 
 # Backgrounds
-# custom-shader = shaders/Sky.glsl
+custom-shader = shaders/Sky.glsl
 # custom-shader = shaders/SunPendulum.glsl
 # custom-shader = shaders/Observatory.glsl
 # custom-shader = shaders/Linescape.glsl
