@@ -1,7 +1,9 @@
 {
+  "includeCoAuthoredBy": false,
   "permissions": {
     "defaultMode": "auto"
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -68,6 +70,15 @@
             "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit(*.md)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/validate-frontmatter.sh \"$CLAUDE_FILE\""
+          }
+        ]
       }
     ],
     "Stop": [
@@ -77,6 +88,21 @@
           {
             "type": "command",
             "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" stop"
+          },
+          {
+            "type": "command",
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/raw-count.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/session-start-load.sh"
           }
         ]
       }
@@ -98,7 +124,8 @@
     "swift-lsp@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "telegram@claude-plugins-official": true,
-    "obsidian@obsidian-skills": true
+    "obsidian@obsidian-skills": true,
+    "claude-code-setup@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
@@ -109,12 +136,13 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "advisorModel": "opus",
+  "effortLevel": "xhigh",
   "voice": {
     "enabled": true,
     "mode": "hold"
   },
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
   "editorMode": "vim",
   "preferredNotifChannel": "ghostty",
   "autoCompactEnabled": false,
