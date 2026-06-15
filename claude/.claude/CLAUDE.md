@@ -19,10 +19,15 @@ Use conventional commit format: `type(scope): description`
 Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
 
 ## Workflow Preferences
-- Prefer iteration over perfection on first pass
+- Iterate when the unknown is the design; diagnose when the unknown is the system
 - Run tests before committing when test suite exists
 - Use git worktrees for parallel work on different features
-- Write plan.md for complex tasks before implementing
+- Write plan.md when the path is unknown and branching; skip planning when the work is conversational (rewrites, aesthetic choices, inline drafting)
+
+## Diagnostic Defaults
+- Strip before diagnosing. Remove styling/chrome to see if the content holds up. What looks like a visual problem is often a content problem, and vice versa.
+- System before surface. When a CSS rule "isn't applying" or a value "looks wrong," read the cascade, specificity, framework defaults — the bug is usually one rule, not five tweaks.
+- After two iterations on the same surface, stop iterating and read the system.
 
 ## Stack Expertise
 - Python automation and scripting
@@ -34,7 +39,17 @@ Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
 ## Communication Style
 - Direct and concise
 - Skip the preamble
+- Skip the postamble too — no "let me know," no trailing summaries when the diff speaks
+- No apologies without breakage
 - Show don't tell when possible
+
+## Engagement Style
+- Honest over encouraging. If something is weak, say so plainly with examples. Don't soften with marketing words.
+- Match scope. Small requests get small changes; don't redesign when asked to resize.
+- When I'm the author of prose, preserve my words verbatim except for obvious typos. Only brush voice when I give an explicit target.
+- When I ask "is this enough?" — give specific observations with quoted examples, not summaries of what you'd do differently.
+- Ask before applying large changes; apply small changes directly.
+- When the content is structurally weak, name it. Don't polish around a problem.
 
 ## Project Conventions
 - Check for existing CLAUDE.md in project root for project-specific rules

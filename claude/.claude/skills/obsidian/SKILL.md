@@ -10,26 +10,48 @@ second brain. densely networked chaos. structure emerges from connections, not h
 
 lowercase with spaces. no PascalCase, no kebab-case, no underscores. filenames match titles exactly.
 
+**titles name the thing, not the action**: `axel writing style` not `writing like axel`. `obd-ii protocols` not `how to use obd-ii`. `compensation dossier` not `negotiating my comp`. Nouns over verbs — the title is the name of a concept, not an instruction.
+
 examples: `cfr session 8`, `self admixture results`, `fire district technology proposal`
 
 ## structure
 
 flat. no MOCs. no hierarchy.
 
-- root — everything lives here
+- root — evergreen knowledge (concepts, references, projects, ideas, meetings, recipes, essays). **all notes live here.**
 - `archive/` — finished work, won't revisit
-- `meta/` — templates, scripts, reports, conventions
+- `meta/` — operational tooling FOR the vault itself: scripts, audit reports of the vault, conventions, attachments. `.txt`/`.html` extensions so obsidian doesn't index them. not a graveyard for past-relevance notes.
+- `CLAUDE.md` at root — the schema doc that lives in the vault, so a session landing in `~/omni` gets the rules even without invoking this skill.
 
-navigation via tags, search, and graph. never indexes.
+**session/task docs that served their purpose get deleted, not moved.** A pre-meeting brief after the meeting happened, a one-time audit of a non-vault thing, a transient analysis — once they've done their job, they're clutter. delete. the only session-shaped things that go in `meta/` are vault-meta artifacts (audits OF the vault, conventions, scripts).
+
+navigation is via tags, search, and graph. **no indexes** — a file that links to every note becomes a gravitational pole that distorts the graph and hides the natural cluster topology. axel tried it; it ruined the graph view. to verify a wikilink target exists, use `ls ~/omni | grep -i "candidate name"` (or obsidian-cli, or rhizome).
 
 ## file extensions
 
-- `.md` — actual notes only (and templates, since templater needs them)
+- `.md` — actual notes only
 - `.txt` or `.html` — operational files (conventions, changelogs, reports, scripts) so obsidian doesn't index them
+
+## frontmatter & triage
+
+raw notes are bare — no frontmatter. axel dumps them; claude processes them later. presence of frontmatter is the triage signal: bare = raw, complete = processed.
+
+**rule**: half-assed frontmatter is worse than no frontmatter. either bare or complete — never partial.
+
+a processed note has at minimum:
+
+- `tags:` — at least one `area/` + one `type/`
+- `status:` — see lifecycle below
+- `created:` — YYYY-MM-DD
+- `author:` — `axel` | `claude` | `bookmark` | `mixed`
+  - `bookmark` notes also set `source: <url>`
+  - `claude` notes also set `source: claude:<context>` (date or session)
+
+**hard rule for claude**: when `author: axel`, claude does not rewrite the body of the note. options are (a) append a `## claude's notes` section at the bottom, or (b) create a separate concept note that links back. preserves attribution. prevents the vault from drifting into ai-synthesized prose indistinguishable from axel's claims — load-bearing for succession-readiness and for hallucination containment when claude later re-ingests its own output as if it were authoritative source.
 
 ## tags
 
-every note gets at least one `area/` tag and one `type/` tag.
+every processed note gets at least one `area/` tag and one `type/` tag.
 
 ### area/ (which domain)
 
@@ -90,6 +112,7 @@ dense. every note links to related notes directly. no intermediary index pages.
 - cross-cluster links only for genuine conceptual bridges
 - prefer inline links where the target name appears naturally in text
 - use `see also:` sections for related notes that don't fit inline
+- never write a `[[wikilink]]` to a note that doesn't exist. check with `ls ~/omni | grep -i "candidate name"` first. if uncertain, use plain text with a `<!-- candidate-link: concept -->` marker for later promotion. fabricated wikilinks become orphan-pointer rot.
 
 ## key entities
 
@@ -166,11 +189,13 @@ if subject is unclear, default to `area/personal` and ask before saving. don't i
 ## when working in this vault
 
 1. read this skill first for ~/omni-specific rules
-2. defer to obsidian-skills plugin for markdown format, CLI, and clipping mechanics
-3. follow naming conventions (lowercase with spaces, match title exactly)
-4. tag every note (area/ + type/, no exceptions)
-5. link densely, inline where the target name appears naturally
-6. operational files get .txt/.html, not .md
-7. don't create MOCs, index pages, or new folders
-8. don't run `rhizome run` without asking
-9. before writing a new note, check `ls ~/omni/ | grep -i "candidate name"` for collision — prefer appending to an existing note over creating a duplicate
+2. follow naming conventions (lowercase with spaces, match title exactly)
+3. raw notes (bare, no frontmatter) are intentional — axel dumps; claude processes. when you process, apply the full contract (tags + status + created + author + source-where-applicable) or leave it bare. never half-assed.
+4. when `author: axel`, do not rewrite the body — append `## claude's notes` or create a linked note
+5. never write `[[wikilinks]]` to non-existent notes (creates orphan-pointer rot)
+6. link densely, inline where the target name appears naturally
+7. operational files get .txt/.html, not .md
+8. don't create MOCs, index pages, or new folders
+9. don't run `rhizome run` without asking
+10. before writing a new note, check `ls ~/omni/ | grep -i "candidate name"` for collision — prefer appending to an existing note over creating a duplicate
+11. defer to obsidian-skills plugin (obsidian-markdown, obsidian-cli, defuddle, obsidian-bases, json-canvas) for format and tooling mechanics
