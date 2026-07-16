@@ -69,6 +69,9 @@ The Chrome extension is available for visual verification. Use it to:
 - Test UI interactions and verify rendering
 - Iterate on visual bugs until they're fixed
 
+## Terminal Graph
+My primary workspace — a canvas app where terminals, browsers, and notes are nodes wired by typed ports. The `terminalgraph` MCP server (user scope, `http://127.0.0.1:4930/mcp`) controls it. Load the `terminal-graph` skill before touching the canvas — it carries the port type system, layout rules, and known gotchas. Defaults: big nodes, wide gutters, group related work, screenshot to verify layout. Prefer spawning agents as terminal nodes on the canvas over invisible background work — I want to see the work happening.
+
 ## Long-Running Tasks
 For autonomous work use `/ralph-loop` with clear completion criteria:
 ```
