@@ -6,7 +6,7 @@
 set -e
 
 DOTFILES_DIR="$HOME/dotfiles"
-PACKAGES=(zsh git ghostty starship claude nvim bin)
+PACKAGES=(zsh git ghostty starship claude nvim terminalgraph bin)
 
 # Colors (using $'...' for proper escape interpretation)
 RED=$'\033[0;31m'
@@ -56,6 +56,7 @@ ${BOLD}COMMANDS${NC}
     fix-paths       Scan configs for hardcoded /Users/<name>/ paths
     status          Show git status and symlink health
     brew            Install/update Homebrew packages from Brewfile
+    nvim            Install/update Neovim from the upstream release tarball
     edit            Open dotfiles in editor
     macos           Apply macOS system preferences
 
@@ -68,6 +69,9 @@ ${BOLD}EXAMPLES${NC}
     dots update         # Push your changes
     dots link zsh       # Link only zsh configs
     dots status         # Check what's changed
+
+${BOLD}ENVIRONMENT${NC}
+    NVIM_VERSION    Neovim tag for 'dots nvim' (default: v0.12.4)
 
 EOF
 }
@@ -126,10 +130,8 @@ cmd_install() {
         success "zsh-syntax-highlighting already installed"
     fi
 
-    # Initialize submodules
-    info "Initializing git submodules..."
-    cd "$DOTFILES_DIR"
-    git submodule update --init --recursive
+    # Neovim comes from the upstream tarball, not brew — see cmd_nvim
+    cmd_nvim
 
     # Link all packages
     cmd_link
@@ -332,7 +334,11 @@ cmd_status() {
     check_link "$HOME/.config/starship.toml" "dotfiles/starship"
     check_link "$HOME/.config/ghostty" "dotfiles/ghostty"
     check_link "$HOME/.config/nvim" "dotfiles/nvim"
+    check_link "$HOME/.config/terminalgraph/config.json" "dotfiles/terminalgraph"
     check_link "$HOME/.claude/CLAUDE.md" "dotfiles/claude"
+    # NOTE: claude/setup.sh populates agents/ with per-file symlinks rather than
+    # linking the directory itself, so probe a file inside it.
+    check_link "$HOME/.claude/agents/omni.md" "dotfiles/claude"
 
     echo
     if $all_ok; then
@@ -359,6 +365,78 @@ cmd_edit() {
     ${EDITOR:-nvim} .
 }
 
+cmd_nvim() {
+    # NOTE: Neovim is installed from the upstream release tarball, not brew.
+    # The config is vim.pack-based and requires 0.12+; the brew formula lags at
+    # 0.11.x and its build is broken on macOS 27. Override the pin with
+    # NVIM_VERSION=v0.12.5 dots nvim
+    local version="${NVIM_VERSION:-v0.12.4}"
+    local prefix="$HOME/.local/nvim"
+    local arch asset url tmp
+
+    case "$(uname -m)" in
+        arm64)  arch="arm64" ;;
+        x86_64) arch="x86_64" ;;
+        *)      error "Unsupported architecture: $(uname -m)"; return 1 ;;
+    esac
+    asset="nvim-macos-${arch}.tar.gz"
+    url="https://github.com/neovim/neovim/releases/download/${version}/${asset}"
+
+    if [ -x "$prefix/bin/nvim" ]; then
+        local current
+        current="v$("$prefix/bin/nvim" --version | head -1 | awk '{print $2}' | sed 's/^v//')"
+        if [ "$current" = "$version" ]; then
+            success "Neovim $version already installed"
+            mkdir -p "$HOME/.local/bin"
+            ln -sfn "$prefix/bin/nvim" "$HOME/.local/bin/nvim"
+            return 0
+        fi
+        info "Neovim $current installed, updating to $version..."
+    else
+        info "Installing Neovim $version..."
+    fi
+
+    tmp="$(mktemp -d)"
+    # shellcheck disable=SC2064
+    trap "rm -rf '$tmp'" RETURN
+
+    if ! curl -fsSL --retry 3 -o "$tmp/$asset" "$url"; then
+        error "Download failed: $url"
+        return 1
+    fi
+    tar -xzf "$tmp/$asset" -C "$tmp"
+
+    local extracted
+    extracted="$(find "$tmp" -maxdepth 1 -type d -name 'nvim-macos-*' | head -1)"
+    if [ -z "$extracted" ] || [ ! -x "$extracted/bin/nvim" ]; then
+        error "Unexpected archive layout in $asset"
+        return 1
+    fi
+
+    rm -rf "$prefix"
+    mkdir -p "$(dirname "$prefix")"
+    mv "$extracted" "$prefix"
+
+    # macOS quarantines downloaded binaries; strip it so nvim will launch.
+    xattr -dr com.apple.quarantine "$prefix" 2>/dev/null || true
+
+    mkdir -p "$HOME/.local/bin"
+    ln -sfn "$prefix/bin/nvim" "$HOME/.local/bin/nvim"
+
+    if "$HOME/.local/bin/nvim" --version >/dev/null 2>&1; then
+        success "Neovim $("$HOME/.local/bin/nvim" --version | head -1 | awk '{print $2}') installed to $prefix"
+    else
+        error "Neovim installed but will not run"
+        return 1
+    fi
+
+    if command -v brew &> /dev/null && brew list --versions neovim &> /dev/null; then
+        warn "brew's neovim ($(brew list --versions neovim | awk '{print $2}')) is also installed"
+        warn "It shadows this build if /opt/homebrew/bin precedes ~/.local/bin on PATH"
+        warn "Remove it with: brew uninstall neovim"
+    fi
+}
+
 cmd_macos() {
     if [ -f "$DOTFILES_DIR/.macos" ]; then
         info "Applying macOS preferences..."
@@ -383,6 +461,7 @@ main() {
         fix-paths)  fix_paths --verbose ;;
         status)     cmd_status ;;
         brew)       cmd_brew ;;
+        nvim)       cmd_nvim ;;
         edit)       cmd_edit ;;
         macos)      cmd_macos ;;
         help|--help|-h|"")
