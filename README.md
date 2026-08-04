@@ -61,13 +61,7 @@ dots edit        # Open in $EDITOR
 
 ## Dependencies
 
-Core tools installed via Brewfile:
-
-- **Editor**: neovim
-- **Shell**: zsh, starship, oh-my-zsh
-- **Search**: fzf, ripgrep, fd, eza
-- **Dev**: gh, git-delta, tmux, jq
-- **Terminal**: ghostty
+The Brewfile installs the core tools. Neovim is the editor, and zsh, starship and oh-my-zsh run the shell. Additionally, fzf, ripgrep, fd and eza handle search, while gh, git-delta, tmux and jq cover day-to-day development. Ghostty is the terminal.
 
 ## Manual Steps
 
