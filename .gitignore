@@ -4,6 +4,17 @@
 
 # Claude local settings
 **/settings.local.json
+**/settings.json.doctor-backup
+
+# Terminal Graph — only config.json and blueprints/ are versioned.
+# Everything below is either a secret or per-machine runtime state.
+terminalgraph/.config/terminalgraph/credentials.json
+terminalgraph/.config/terminalgraph/telemetry.json
+terminalgraph/.config/terminalgraph/ghostty.conf
+terminalgraph/.config/terminalgraph/*.terminalgraph-workspace
+terminalgraph/.config/terminalgraph/sessions/
+terminalgraph/.config/terminalgraph/pipes/
+terminalgraph/.config/terminalgraph/bin/
 
 # macOS
 .DS_Store

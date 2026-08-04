@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "CF70C13D-5D61-46D5-9A52-E9DC15AF362A",
+  "name": "2TBTG",
+  "description": "2 Terminal Browser Terminal Group",
+  "createdAt": "2026-07-16T19:03:09.965Z", "appVersion": "0.6.3-beta",
+  "nodes": [
+    {
+      "id": "63C41638-5238-4697-8DB2-1400D5D140F3",
+      "type": "group",
+      "x": 0.0, "y": 0.0, "width": 1676.0, "height": 3520.0, "zIndex": 17, "title": "Freeform Group",
+      "config": {
+        "layout": { "kind": "freeform" },
+        "children": [
+          {
+            "id": "1DBFC9F3-4005-4EE2-9A8A-5D8DD877620B",
+            "type": "terminal",
+            "x": 878.0,
+            "y": 2420.0, "width": 760.0, "height": 1000.0, "zIndex": 0, "title": "axel@Mac:~",
+            "config": { "workingDirectory": "." }
+          },
+          {
+            "id": "72A65FAE-793D-4F4D-931D-46A8F0032216",
+            "type": "terminal",
+            "x": 38.0,
+            "y": 2420.0, "width": 800.0, "height": 1000.0, "zIndex": 1, "title": "axel@Mac:~",
+            "config": { "workingDirectory": "." }
+          },
+          {
+            "id": "AC94CADA-2D48-4504-B4BF-DE8AB4605EDC",
+            "type": "browser",
+            "x": 38.0,
+            "y": 1140.0, "width": 1600.0, "height": 1200.0, "zIndex": 2, "title": "Browser",
+            "config": { "url": "", "showDevTools": true }
+          },
+          {
+            "id": "2D194EFB-EF16-4079-9063-638BB170C20B",
+            "type": "terminal",
+            "x": 38.0,
+            "y": 20.0, "width": 1600.0, "height": 1000.0, "zIndex": 3, "title": "axel@Mac:~",
+            "config": { "workingDirectory": "." }
+          }
+        ],
+        "wasWorktreeBound": false
+      }
+    }
+  ],
+  "connections": []
+}

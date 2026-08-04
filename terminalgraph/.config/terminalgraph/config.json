@@ -1,0 +1,22 @@
+{
+  "agentSessionIntegrationsEnabled": false,
+  "browserCustomSearchTemplate": "",
+  "browserSearchEngine": "google",
+  "enabledAgentSessionIntegrations": [],
+  "gridSpacing": 20,
+  "interfaceTextSize": "system",
+  "mcpEnabled": true,
+  "nodeContentTextSize": "system",
+  "notifyOnTerminalFailure": false,
+  "notifyOnTerminalLongRunning": false,
+  "piAttentionNotificationsEnabled": false,
+  "recentWorkspaceFiles": [],
+  "recentWorkspaces": [],
+  "terminalLongRunningThreshold": 10,
+  "textSizesLinked": true,
+  "themeDarkName": "INTDEV Dark",
+  "themeLightName": "INTDEV Light",
+  "themeMode": "system",
+  "webhookPort": 4931,
+  "worktreeNamePack": "moons"
+}
