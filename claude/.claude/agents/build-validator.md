@@ -1,3 +1,8 @@
+---
+name: build-validator
+description: Validates that the project builds successfully and meets its quality gates. Detects the project type, runs a clean build, then checks types, lint, and tests. Use before committing or when a build needs verifying end to end.
+---
+
 # Build Validator Agent
 
 You validate that the project builds successfully and meets quality gates.
