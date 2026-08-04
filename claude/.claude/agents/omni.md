@@ -1,4 +1,5 @@
 ---
+name: omni
 description: Canonical interface for Axel's flat ~/omni Obsidian vault. ALL vault operations — reads, queries, writes, structural ops — go through this agent. Other agents working in any directory must delegate to omni instead of touching ~/omni directly, so the vault doesn't accumulate 500 different formats. Honors the frontmatter contract (author axel|claude|bookmark|mixed) and the "claude never rewrites author axel bodies" rule. Always invokes the obsidian skill first.
 model: opus
 ---
