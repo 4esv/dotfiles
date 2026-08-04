@@ -76,7 +76,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/sh /Users/axel/omni/meta/scripts/validate-frontmatter.sh \"$CLAUDE_FILE\""
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni check \"$CLAUDE_FILE\""
           }
         ]
       }
@@ -91,7 +91,7 @@
           },
           {
             "type": "command",
-            "command": "/bin/sh /Users/axel/omni/meta/scripts/raw-count.sh"
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni status --hook"
           }
         ]
       }
@@ -102,7 +102,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/sh /Users/axel/omni/meta/scripts/session-start-load.sh"
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni status --hook"
           }
         ]
       }
@@ -120,12 +120,12 @@
     ]
   },
   "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "swift-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": false,
+    "swift-lsp@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
-    "telegram@claude-plugins-official": true,
+    "telegram@claude-plugins-official": false,
     "obsidian@obsidian-skills": true,
-    "claude-code-setup@claude-plugins-official": true
+    "claude-code-setup@claude-plugins-official": false
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
@@ -136,7 +136,8 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
+  "tui": "fullscreen",
   "voice": {
     "enabled": true,
     "mode": "hold"
@@ -147,7 +148,12 @@
   "preferredNotifChannel": "ghostty",
   "autoCompactEnabled": false,
   "remoteControlAtStartup": true,
+  "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "skillOverrides": {
+    "promote-note": "off",
+    "test-driven-development": "off"
+  }
 }
