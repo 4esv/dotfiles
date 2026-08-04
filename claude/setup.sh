@@ -10,7 +10,7 @@ CLAUDE_DIR="$HOME/.claude"
 echo "🤖 Setting up Claude Code configuration..."
 
 # Create directories
-mkdir -p "$CLAUDE_DIR"/{commands,scripts,assets,skills}
+mkdir -p "$CLAUDE_DIR"/{agents,commands,scripts,assets,skills}
 
 # Symlink or copy config files
 echo "  → Linking configuration..."
@@ -27,6 +27,18 @@ done
 echo "  → Linking skills..."
 for skill_dir in "$SCRIPT_DIR/.claude/skills"/*/; do
     [ -d "$skill_dir" ] && ln -sfn "$skill_dir" "$CLAUDE_DIR/skills/$(basename "$skill_dir")"
+done
+
+# Symlink agents
+# NOTE: every agent file needs `name` and `description` in its frontmatter or
+# Claude Code skips it silently — no error, the agent just never appears.
+echo "  → Linking agents..."
+for agent in "$SCRIPT_DIR/.claude/agents"/*.md; do
+    [ -f "$agent" ] || continue
+    if ! awk 'NR==1 && $0!="---" {exit 1} NR>1 && /^---/{exit 1} /^name:/{found=1} END{exit !found}' "$agent"; then
+        echo "    ! $(basename "$agent") has no 'name:' in frontmatter — will not load"
+    fi
+    ln -sf "$agent" "$CLAUDE_DIR/agents/$(basename "$agent")"
 done
 
 # Copy scripts (not symlink, they need to be executable)
