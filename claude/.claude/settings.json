@@ -117,6 +117,20 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh pr merge*)",
+            "command": "~/.claude/scripts/merge-gate.sh",
+            "timeout": 30,
+            "statusMessage": "Checking PR checks before merge"
+          }
+        ]
+      }
     ]
   },
   "enabledPlugins": {
