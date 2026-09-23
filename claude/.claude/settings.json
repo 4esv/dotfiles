@@ -23,65 +23,71 @@
             "command": "/bin/sh \"${HOME}/Library/Application Support/Taphaptic/bin/taphaptic-hook\" idle_prompt"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/axel/.claude/luvus-agent-hook.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Write|Edit(*.py)",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "command -v ruff >/dev/null && ruff format \"$CLAUDE_FILE\" 2>/dev/null || true"
+            "command": "/bin/bash /Users/axel/dotfiles/claude/.claude/scripts/format-on-write.sh"
           }
         ]
       },
       {
-        "matcher": "Write|Edit(*.js)",
+        "matcher": "Write|Edit|NotebookEdit|Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
+            "command": "/bin/bash /Users/axel/dotfiles/claude/.claude/scripts/touched.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni status --hook"
+          },
+          {
+            "type": "command",
+            "command": "python3 /Users/axel/omni/meta/scripts/rms.py status --hook"
           }
         ]
       },
       {
-        "matcher": "Write|Edit(*.ts)",
         "hooks": [
           {
             "type": "command",
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit(*.tsx)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit(*.json)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "command -v prettier >/dev/null && prettier --write \"$CLAUDE_FILE\" 2>/dev/null || true"
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit(*.md)",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni check \"$CLAUDE_FILE\""
+            "command": "/Users/axel/.claude/luvus-agent-hook.sh"
           }
         ]
       }
     ],
     "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/bash /Users/axel/dotfiles/claude/.claude/scripts/stop-gate.sh",
+            "timeout": 20,
+            "statusMessage": "Definition-of-done check"
+          }
+        ]
+      },
       {
         "matcher": "*",
         "hooks": [
@@ -94,15 +100,12 @@
             "command": "/bin/sh /Users/axel/omni/meta/scripts/omni status --hook"
           }
         ]
-      }
-    ],
-    "SessionStart": [
+      },
       {
-        "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "/bin/sh /Users/axel/omni/meta/scripts/omni status --hook"
+            "command": "/Users/axel/.claude/luvus-agent-hook.sh"
           }
         ]
       }
@@ -124,8 +127,8 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(gh pr merge*)",
             "command": "~/.claude/scripts/merge-gate.sh",
+            "if": "Bash(gh pr merge*)",
             "timeout": 30,
             "statusMessage": "Checking PR checks before merge"
           }
@@ -133,13 +136,15 @@
       }
     ]
   },
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": false,
-    "swift-lsp@claude-plugins-official": false,
     "frontend-design@claude-plugins-official": true,
-    "telegram@claude-plugins-official": false,
     "obsidian@obsidian-skills": true,
-    "claude-code-setup@claude-plugins-official": false
+    "typesafe@typesafe-ai": true,
+    "engineering@synced": false,
+    "productivity@synced": false
   },
   "extraKnownMarketplaces": {
     "obsidian-skills": {
@@ -147,10 +152,26 @@
         "source": "github",
         "repo": "kepano/obsidian-skills"
       }
+    },
+    "typesafe-ai": {
+      "source": {
+        "source": "github",
+        "repo": "typesafe-ai/skills"
+      }
     }
   },
+  "feedbackDrafts": "notify",
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "medium"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "medium"
+    }
+  },
+  "askUserQuestionTimeout": "60s",
   "tui": "fullscreen",
   "voice": {
     "enabled": true,
@@ -165,9 +186,36 @@
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: assume private unless the remote host and repo name indicate otherwise, or a visibility check in the transcript shows public",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: unknown — origin/HEAD unset, no remotes configured",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: The trusted repo and its remote(s) only (no additional orgs configured) — as scoped by the Trusted repo and Repository visibility entries above",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: None configured",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development",
+      "**Trusted repo**: The git repository the agent started in (its working directory, /Users/axel/Code/projects/node-formflows) — no remotes are configured, so no remote scope applies",
+      "**Org-specific CLIs**: None configured"
+    ]
+  },
   "voiceEnabled": true,
-  "skillOverrides": {
-    "promote-note": "off",
-    "test-driven-development": "off"
+  "statusLine": {
+    "type": "command",
+    "command": "/bin/bash /Users/axel/dotfiles/claude/.claude/scripts/statusline.sh"
   }
 }
