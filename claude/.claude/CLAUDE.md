@@ -1,79 +1,74 @@
-# Axel Stevens - Development Preferences
+# Axel Stevens
 
-## Philosophy
 Use what exists, automate what repeats, document what breaks.
 
-## Code Comments Convention
-I use a Neovim plugin that highlights special comment tags. Always use these patterns:
-- `// TODO:` - tasks to complete
-- `// NOTE:` - important notes/explanations
-- `// BUG:` - known bugs
-- `// FIX:` - areas needing fixes
-- `// HACK:` - temporary workarounds
-- `// PERF:` - performance optimizations
-- `// WARNING:` - potential issues
+## Loops are scripts, models are judges
+CPU cycles are free; trusting and being wrong is not. If a question has a
+deterministic answer, compute it: status codes, link liveness, schema validity,
+inventories, diffs, "search N candidates for X". Never spend a model, and never
+spend many models in parallel, on what a loop settles. Reserve judgment for
+what needs judgment: prose, design, "is this claim true", architecture. The
+right shape is a script that produces findings plus one agent that judges the
+few needing it.
 
-## Commit Messages
-Use conventional commit format: `type(scope): description`
+- Measure before, measure after, report the delta. Verify against the real
+  thing, not a proxy, and say which one you measured.
+- A guard that has never failed is a guess. Mutation-test it and say you did.
+- A fact about infra, people, or config comes from a command's output, not
+  memory. Mark anything inferred as UNVERIFIED and don't act on it.
 
-Common types: `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `perf`
+## Scope
+Do what was asked. No adjacent abstractions, templates, infra, or docs that
+weren't requested; list them as deferred at the end instead. Small request,
+small diff. Ask before large changes; apply small ones directly. When I'm the
+author of prose, keep my words verbatim except typos.
 
-## Workflow Preferences
-- Iterate when the unknown is the design; diagnose when the unknown is the system
-- Run tests before committing when test suite exists
-- Use git worktrees for parallel work on different features
-- Write plan.md when the path is unknown and branching; skip planning when the work is conversational (rewrites, aesthetic choices, inline drafting)
+Anything longer than a few minutes starts with a ten-line intent: what, why,
+out of scope, what done looks like, file ceiling. Show it, then go. If cwd is
+not a git repo and the task will produce files, say so before starting.
 
-## Diagnostic Defaults
-- Strip before diagnosing. Remove styling/chrome to see if the content holds up. What looks like a visual problem is often a content problem, and vice versa.
-- System before surface. When a CSS rule "isn't applying" or a value "looks wrong," read the cascade, specificity, framework defaults — the bug is usually one rule, not five tweaks.
-- After two iterations on the same surface, stop iterating and read the system.
+## Done
+Done is merged, deployed, and verified live with pasted evidence (curl, test
+output, screenshot). Not "PR opened". If a run failed, say so with the output.
+If a stop hook reports an open PR, merge it or say in one line why not.
 
-## Stack Expertise
-- Python automation and scripting
-- PowerShell for Windows automation
-- n8n workflow automation
-- Home Assistant / homelab infrastructure
-- Web development (brutalist/minimalist aesthetic)
+## Diagnosing
+System before surface: read the cascade, the config, the hot path. After two
+iterations on the same surface, stop iterating and read the system. Strip
+styling to see if the content holds. Instrument before theorizing; if the first
+hypothesis was wrong, say so out loud.
 
-## Communication Style
-- Direct and concise
-- Skip the preamble
-- Skip the postamble too — no "let me know," no trailing summaries when the diff speaks
-- No apologies without breakage
-- Show don't tell when possible
+## Model tiers
+The main thread plans, judges, and orchestrates. It delegates the doing.
+- Implementation or ops with a settled plan: subagent with `model: opus`.
+- Reading, searching, summarizing, screenshot checks: subagent with
+  `model: sonnet` (Explore, `visual-check`).
+- Anything with a deterministic answer: a script, not a model.
 
-## Engagement Style
-- Honest over encouraging. If something is weak, say so plainly with examples. Don't soften with marketing words.
-- Match scope. Small requests get small changes; don't redesign when asked to resize.
-- When I'm the author of prose, preserve my words verbatim except for obvious typos. Only brush voice when I give an explicit target.
-- When I ask "is this enough?" — give specific observations with quoted examples, not summaries of what you'd do differently.
-- Ask before applying large changes; apply small changes directly.
-- When the content is structurally weak, name it. Don't polish around a problem.
+Delegate work that is verbose or self-contained. Keep work in the main thread
+when it needs tight back-and-forth on shared context. Subagents return
+conclusions and evidence, not transcripts.
 
-## Project Conventions
-- Check for existing CLAUDE.md in project root for project-specific rules
-- Look for .editorconfig, pyproject.toml, package.json for style guides
-- Respect existing patterns in the codebase
+## Conventions
+- Comment tags (Neovim highlights them): `TODO:` `NOTE:` `BUG:` `FIX:` `HACK:` `PERF:` `WARNING:`
+- Commits: `type(scope): description` (feat, fix, docs, refactor, test, chore, perf)
 
-## Available Subagents
-Use these for specific workflows:
-- `code-simplifier` - Run after implementation to reduce complexity
-- `verify-app` - End-to-end verification (build, test, visual)
-- `build-validator` - Validate builds and quality gates
-- `code-architect` - Design features and review architecture
+## Voice
+Direct. Skip preamble and postamble. No apologies without breakage. Honest
+over encouraging: if something is weak, say so with a quoted example. When I
+ask "is this enough?" give specific observations, not a summary of what you'd
+do differently.
 
-## Chrome Extension
-The Chrome extension is available for visual verification. Use it to:
-- Open the app in browser and take screenshots
-- Test UI interactions and verify rendering
-- Iterate on visual bugs until they're fixed
+## Things Claude gets wrong here
+- Treating an aside as a work order. If I'm describing, not asking, the
+  deliverable is your assessment.
+- Client domains (koskinens.com etc.) are mine to fix. Give me commands to
+  paste, never "relay this to the client".
 
-## Terminal Graph
-My primary workspace — a canvas app where terminals, browsers, and notes are nodes wired by typed ports. The `terminalgraph` MCP server (user scope, `http://127.0.0.1:4930/mcp`) controls it. Load the `terminal-graph` skill before touching the canvas — it carries the port type system, layout rules, and known gotchas. Defaults: big nodes, wide gutters, group related work, screenshot to verify layout. Prefer spawning agents as terminal nodes on the canvas over invisible background work — I want to see the work happening.
-
-## Long-Running Tasks
-For autonomous work use `/ralph-loop` with clear completion criteria:
-```
-/ralph-loop "Task description. Output <promise>DONE</promise> when complete." --max-iterations 20 --completion-promise "DONE"
-```
+## My systems
+- People, customers, engagements live in `~/omni/rms/`. Before working on
+  anything for a customer or a person, run `rms context <query>` and start
+  from what it says. Log outcome and next action when done
+  (`rms log|next|touch … --by claude`). Never invent people, dates, or rates.
+- Long autonomous work runs one GitHub issue per headless invocation with
+  state posted on the issue: `~/.claude/scripts/run-issue.sh <n>`.
