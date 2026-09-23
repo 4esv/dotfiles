@@ -141,10 +141,12 @@ dense. every note links to related notes directly. no intermediary index pages.
 
 ## key entities
 
+who they are to axel lives in rms, not here (this file is public): `rms context <name>`.
+
 - **[client]`ent: [client]`
-- **[org2]** — transparency-first portfolio construction tool. startup project. `ent: [org2]`
-- **[employer]** — axel's employer (systems integrator, college of human ecology). `ent: [employer]`
-- **[org]** — volunteer fire service, multiple roles. `ent: [org]` (axel's own ems study is `area/ems`, not the district's)
+- **[org2]** — transparency-first portfolio construction tool. `ent: [org2]`
+- **[employer]** — employer. `ent: [employer]`
+- **[org]** — `ent: [org]` (axel's own ems study is `area/ems`, not the district's)
 
 ## rms (people · customers · engagements · renewals)
 

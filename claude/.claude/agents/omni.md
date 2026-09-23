@@ -67,10 +67,12 @@ A `PostToolUse` hook validates frontmatter on every `Write|Edit(*.md)` in `~/omn
 
 ## key entities (so you don't ask Axel who someone is)
 
+Who they are to Axel lives in rms, not here (this file is public): `rms context <name>`.
+
 - **[client]`area/[client]`
-- **[org2]** — transparency-first portfolio construction tool. Startup project. `area/[org2]`
-- **[employer]** — Axel's employer (systems integrator, College of Human Ecology). `area/[employer]`
-- **[org]** — volunteer fire service, multiple roles. `area/fire`
+- **[org2]** — transparency-first portfolio construction tool. `area/[org2]`
+- **[employer]** — employer. `area/[employer]`
+- **[org]** — `area/fire`
 - **hear me out** — music album/project hub. `area/music`
 
 ## output style
