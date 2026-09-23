@@ -141,10 +141,12 @@ dense. every note links to related notes directly. no intermediary index pages.
 
 ## key entities
 
-- **koskinen's towing & repair** — axel's wife savannah's tow business in ithaca, ny. also a consulting client. `ent: koskinens`
-- **metf** — transparency-first portfolio construction tool. startup project. `ent: metf`
-- **cornell university** — axel's employer (systems integrator, college of human ecology). `ent: cornell`
-- **enfield fire district / evfc** — volunteer fire service, multiple roles. `ent: enfield fire district` (axel's own ems study is `area/ems`, not the district's)
+who they are to axel lives in rms, not here (this file is public): `rms context <name>`.
+
+- **koskinen's towing & repair** — `ent: koskinens`
+- **metf** — transparency-first portfolio construction tool. `ent: metf`
+- **cornell university** — employer. `ent: cornell`
+- **enfield fire district / evfc** — `ent: enfield fire district` (axel's own ems study is `area/ems`, not the district's)
 
 ## rms (people · customers · engagements · renewals)
 

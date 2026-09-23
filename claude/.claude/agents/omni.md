@@ -67,10 +67,12 @@ A `PostToolUse` hook validates frontmatter on every `Write|Edit(*.md)` in `~/omn
 
 ## key entities (so you don't ask Axel who someone is)
 
-- **koskinen's towing & repair** — wife Savannah's tow business in Ithaca, NY. Also a consulting client. `area/koskinens`
-- **metf** — transparency-first portfolio construction tool. Startup project. `area/metf`
-- **cornell university** — Axel's employer (systems integrator, College of Human Ecology). `area/cornell`
-- **enfield fire district / evfc** — volunteer fire service, multiple roles. `area/fire`
+Who they are to Axel lives in rms, not here (this file is public): `rms context <name>`.
+
+- **koskinen's towing & repair** — `area/koskinens`
+- **metf** — transparency-first portfolio construction tool. `area/metf`
+- **cornell university** — employer. `area/cornell`
+- **enfield fire district / evfc** — `area/fire`
 - **hear me out** — music album/project hub. `area/music`
 
 ## output style
