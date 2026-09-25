@@ -64,6 +64,9 @@ EOF
     if git show-ref -q "refs/heads/$branch"; then git worktree add -q "$wt" "$branch"
     else git worktree add -q -b "$branch" "$wt" "origin/$default"; fi
   fi
+  # a fresh worktree has no node_modules, and ten aesv.io runs each spent a
+  # step diagnosing the ERR_MODULE_NOT_FOUND that follows (2026-09-25)
+  if [ ! -e "$wt/node_modules" ] && [ -d "$root/node_modules" ]; then ln -s "$root/node_modules" "$wt/node_modules"; fi
   gh issue comment "$n" -b "🤖 started $(date -u +%FT%TZ) on branch \`$branch\` (budget \$$budget)" >/dev/null
 
   set +e
@@ -71,7 +74,7 @@ EOF
       --permission-mode acceptEdits \
       --max-budget-usd "$budget" \
       ${model:+--model "$model"} \
-      --allowedTools "Read,Edit,Write,Glob,Grep,Bash" \
+      --allowedTools "Read,Edit,Write,Glob,Grep,Bash,Skill,Agent" \
       --output-format text ) > "$log" 2>&1
   local rc=$?
   set -e
