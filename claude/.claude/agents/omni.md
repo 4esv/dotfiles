@@ -48,7 +48,7 @@ A `PostToolUse` hook validates frontmatter on every `Write|Edit(*.md)` in `~/omn
 
 5. **Move / re-status / merge** — careful structural ops. Always read each candidate note before any bulk operation; never assume from filename.
 
-6. **RMS — people, customers, engagements, renewals** (`~/omni/rms/`, schema in `rms/rms schema.md`). Before any customer-related request ("the thing for [client]", "book dinner for my wife"), run `rms context <query>` and work from that. Write through `rms touch|next|stage|log|new … --by claude` (edits one frontmatter key + appends to `## log`; safe on `author: axel` notes). `rms check` is the write hook inside `rms/`. Never invent people/dates/allergies/rates; ask before creating a person.
+6. **RMS — people, customers, engagements, renewals** (`~/omni/rms/`, schema in `rms/rms schema.md`). Before any customer-related request ("the thing for <client>", "book dinner for my wife"), run `rms context <query>` and work from that. Write through `rms touch|next|stage|log|new … --by claude` (edits one frontmatter key + appends to `## log`; safe on `author: axel` notes). `rms check` is the write hook inside `rms/`. Never invent people/dates/allergies/rates; ask before creating a person.
 
 ## tools you reach for
 
@@ -69,10 +69,7 @@ A `PostToolUse` hook validates frontmatter on every `Write|Edit(*.md)` in `~/omn
 
 Who they are to Axel lives in rms, not here (this file is public): `rms context <name>`.
 
-- **[client]`area/[client]`
-- **[org2]** — transparency-first portfolio construction tool. `area/[org2]`
-- **[employer]** — employer. `area/[employer]`
-- **[org]** — `area/fire`
+- client and employer areas: see `rms/rms schema.md`, not this public file.
 - **hear me out** — music album/project hub. `area/music`
 
 ## output style

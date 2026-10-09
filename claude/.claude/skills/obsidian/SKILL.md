@@ -102,7 +102,7 @@ no default. a note about cooking or a dog crate has no area. never `area/persona
 
 ### ent: (who owns the work — optional, reserved for rms entities)
 
-`[client]` | `[org2]` | `[org]` | `[employer]`. set only when the note *is work for* that entity: a feature, an issue, a deliverable, a meeting, a proposal. venting about [client] is not owned by [client]; a web feature for [client] is. anything done for the district gets `ent: [org]`; axel's ems notes do not. [employer] joins the list because its tracking is moving here out of Notion.
+one of the rms org slugs (see `rms/rms schema.md`). set only when the note *is work for* that entity: a feature, an issue, a deliverable, a meeting, a proposal. venting about a client is not owned by that client; a web feature for them is. axel's own study notes are not owned by the org they relate to.
 
 ### type/ (what kind of note)
 
@@ -143,16 +143,13 @@ dense. every note links to related notes directly. no intermediary index pages.
 
 who they are to axel lives in rms, not here (this file is public): `rms context <name>`.
 
-- **[client]`ent: [client]`
-- **[org2]** — transparency-first portfolio construction tool. `ent: [org2]`
-- **[employer]** — employer. `ent: [employer]`
-- **[org]** — `ent: [org]` (axel's own ems study is `area/ems`, not the district's)
+- the entity list itself lives in `rms/rms schema.md`, not in this public file.
 
 ## rms (people · customers · engagements · renewals)
 
 `rms/people/ orgs/ engagements/ assets/`. schema + rules in `rms/rms schema.md`, live views in `rms/rms.base`, tool `rms` (= `omni rms`, `meta/scripts/rms.py`, stdlib python, also deployed to the hermes box as `~/.local/bin/rms`).
 
-- **before any customer work** — "let's keep working on that thing for [client]" — run `rms context <query>`: stakeholders, stage, rate, next action, log tail, upcoming dates. don't work from memory.
+- **before any customer work** — "let's keep working on that thing for <client>" — run `rms context <query>`: stakeholders, stage, rate, next action, log tail, upcoming dates. don't work from memory.
 - `rms status` (one line; also the SessionStart hook), `rms upcoming [--days N]`, `rms stale`, `rms pipeline`, `rms find <q>`.
 - write through the tool: `rms touch <q> -m "…"`, `rms next <q> "…" --due YYYY-MM-DD`, `rms stage <q> <stage>`, `rms log <q> "…"`, `rms new person|org|engagement|asset NAME …`. pass `--by claude`. it edits only the touched frontmatter key and appends to `## log`, which is why it is safe on `author: axel` notes.
 - rms notes carry the vault contract **plus** `kind:`; dates `YYYY-MM-DD` (year unknown → 1900); flat frontmatter; link fields are `"[[wikilinks]]"` to notes that exist. `rms check` is the write hook inside `rms/` (bare notes are rejected there — the opposite of the root).
@@ -216,10 +213,10 @@ when defuddle pulls a web page into the vault, it becomes a note with `type/clip
 | subject                               | area             | topic (optional) |
 | ------------------------------------- | ---------------- | ---------------- |
 | pkm, productivity, general tech       | `area/personal`  | `tech`           |
-| automotive, diagnostics, OBD          | `area/[client]` | `automotive`     |
+| automotive, diagnostics, OBD          | `area/<client>`  | `automotive`     |
 | firefighting, EMS, ICS, grants        | `area/fire`      |                  |
-| portfolio theory, quant, finance      | `area/[org2]`      | `quant`          |
-| [employer], higher ed, systems           | `area/[employer]`   |                  |
+| portfolio theory, quant, finance      | `area/<org>`     | `quant`          |
+| higher ed, systems                    | `area/<employer>`|                  |
 | music theory, production, instruments | `area/music`     | `audio`          |
 
 if subject is unclear, default to `area/personal` and ask before saving. don't invent new area or topic tags for one-off captures. clippings start `status: raw` until triaged. unlinked clippings are dead weight — either add `[[wikilinks]]` to related notes or archive them.

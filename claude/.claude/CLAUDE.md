@@ -62,7 +62,7 @@ do differently.
 ## Things Claude gets wrong here
 - Treating an aside as a work order. If I'm describing, not asking, the
   deliverable is your assessment.
-- Client domains (example.com etc.) are mine to fix. Give me commands to
+- Client domains are mine to fix. Give me commands to
   paste, never "relay this to the client".
 
 ## My systems
