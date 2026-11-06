@@ -140,6 +140,9 @@ vim.pack.add({
   gh("mlochbaum/BQN"),
   gh("calebowens/nvim-bqn"),
 
+  -- AI / agent bridge -------------------------------------------------------
+  gh("carderne/pi-nvim"),
+
   -- Colorschemes (active: posterpole; cycle/preview them all with <leader>ft) -
   gh("psynyde/mono"),
   gh("eldritch-theme/eldritch.nvim"),
@@ -410,6 +413,14 @@ require("render-markdown").setup({ completions = { lsp = { enabled = true } } })
 require("checkmate").setup()
 vim.g.mkdp_filetypes = { "markdown" }
 
+-- pi bridge (Neovim -> running pi session) -----------------------------------
+do
+  local ok, pi_nvim = pcall(require, "pi-nvim")
+  if ok then
+    pi_nvim.setup({ set_default_keymaps = false })
+  end
+end
+
 -- which-key group labels ------------------------------------------------------
 local wk = require("which-key")
 wk.setup({ preset = "modern" })
@@ -426,6 +437,7 @@ wk.add({
   { "<leader>t", group = " Terminal" },
   { "<leader>p", group = " Packages" },
   { "<leader>B", group = "⊢ BQN" },
+  { "<leader>a", group = " Pi agent" },
 })
 
 -- Colorscheme (synchronous — needed for the first paint) ----------------------

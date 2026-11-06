@@ -299,6 +299,19 @@ map("t", "<C-k>", "<cmd>wincmd k<cr>", { desc = "Terminal up nav" })
 map("t", "<C-l>", "<cmd>wincmd l<cr>", { desc = "Terminal right nav" })
 
 -- ---------------------------------------------------------------------------
+-- pi agent bridge (pi-nvim)  [<leader>a]
+-- ---------------------------------------------------------------------------
+map("n", "<leader>ac", "<cmd>Pi<cr>", { desc = "Send context to pi" })
+map("x", "<leader>ac", "<cmd>Pi<cr>", { desc = "Send selection to pi" })
+map("n", "<leader>ap", "<cmd>PiSend<cr>", { desc = "Send prompt to pi" })
+map("n", "<leader>af", "<cmd>PiSendFile<cr>", { desc = "Send file to pi" })
+map("x", "<leader>as", "<cmd>PiSendSelection<cr>", { desc = "Send selection to pi" })
+map("n", "<leader>ab", "<cmd>PiSendBuffer<cr>", { desc = "Send buffer to pi" })
+map("n", "<leader>aP", "<cmd>PiPing<cr>", { desc = "Ping pi" })
+map("n", "<leader>aS", "<cmd>PiSessions<cr>", { desc = "Pi sessions" })
+map("n", "<leader>ao", "<cmd>TermExec cmd='pi' direction=float<cr>", { desc = "Open pi (float)" })
+
+-- ---------------------------------------------------------------------------
 -- BQN  [<leader>B]  (inline-eval maps are buffer-local in after/ftplugin/bqn.lua)
 -- ---------------------------------------------------------------------------
 if vim.fn.executable("bqn") == 1 then

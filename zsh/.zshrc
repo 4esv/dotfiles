@@ -273,3 +273,23 @@ fi
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+
+
+# =============================================================================
+# Pi: DeepSeek-only lock
+# =============================================================================
+# Pi auto-detects provider API keys from the environment and exposes every
+# matching model in /model ("the picker shows models whose providers have
+# usable authentication"). Hide those keys from Pi ONLY, so the rest of the
+# shell and other tools keep them. To add a provider back, remove its entry
+# from the list below (and re-run /login or restore models.json/auth.json).
+pi() {
+  env -u OPENROUTER_API_KEY -u GEMINI_API_KEY -u ANTHROPIC_API_KEY -u OPENAI_API_KEY \
+      -u MISTRAL_API_KEY -u GROQ_API_KEY -u XAI_API_KEY -u TOGETHER_API_KEY \
+      -u FIREWORKS_API_KEY -u CEREBRAS_API_KEY -u NVIDIA_API_KEY \
+      -u MOONSHOT_API_KEY -u ZAI_API_KEY -u QWEN_TOKEN_PLAN_API_KEY \
+      -u META_API_KEY -u MINIMAX_API_KEY -u HF_TOKEN -u AI_GATEWAY_API_KEY \
+      command pi "$@"
+}
+

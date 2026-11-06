@@ -34,3 +34,7 @@ Thumbs.db
 # Local overrides (files only)
 .zshrc.local
 .gitconfig.local
+
+# Local env secrets
+.zshenv.local
+__pycache__/
