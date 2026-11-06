@@ -6,7 +6,7 @@
 set -e
 
 DOTFILES_DIR="$HOME/dotfiles"
-PACKAGES=(zsh git ghostty starship claude nvim terminalgraph bin)
+PACKAGES=(zsh git ghostty starship nvim terminalgraph bin)
 
 # Colors (using $'...' for proper escape interpretation)
 RED=$'\033[0;31m'
@@ -235,13 +235,7 @@ fix_paths() {
     # that should use $HOME or ~ instead for portability across machines.
     local files_to_scan=(
         "$DOTFILES_DIR/zsh/.zshrc"
-        "$DOTFILES_DIR/claude/.claude/settings.json"
     )
-
-    # Also scan all .sh scripts under claude
-    while IFS= read -r -d '' f; do
-        files_to_scan+=("$f")
-    done < <(find "$DOTFILES_DIR/claude/.claude/scripts" -name '*.sh' -print0 2>/dev/null)
 
     for file in "${files_to_scan[@]}"; do
         [ -f "$file" ] || continue
@@ -335,10 +329,6 @@ cmd_status() {
     check_link "$HOME/.config/ghostty" "dotfiles/ghostty"
     check_link "$HOME/.config/nvim" "dotfiles/nvim"
     check_link "$HOME/.config/terminalgraph/config.json" "dotfiles/terminalgraph"
-    check_link "$HOME/.claude/CLAUDE.md" "dotfiles/claude"
-    # NOTE: claude/setup.sh populates agents/ with per-file symlinks rather than
-    # linking the directory itself, so probe a file inside it.
-    check_link "$HOME/.claude/agents/omni.md" "dotfiles/claude"
 
     echo
     if $all_ok; then

@@ -28,7 +28,6 @@ git clone https://github.com/4esv/dotfiles.git ~/dotfiles
 | `nvim` | Neovim config, vendored (no submodule) |
 | `ghostty` | Ghostty terminal with custom shaders |
 | `starship` | Minimal prompt with GitHub Dark theme |
-| `claude` | Claude Code config: agents, commands, skills, hooks ([details](claude/README.md)) |
 | `terminalgraph` | Terminal Graph app preferences and blueprints |
 | `bin` | The `dots` CLI itself |
 
@@ -69,7 +68,7 @@ Two entries exist for a specific reason:
 
 | Package | Why it's required |
 |---------|-------------------|
-| `ruff` | The Claude Code `PostToolUse` hook formats Python with it |
+| `ruff` | Python formatter and linter |
 | `prettier` | The same hook formats JS, TS, and JSON with it |
 
 Those hooks are written as `command -v <tool> && <tool> ... || true`, so a missing formatter makes them no-op silently and nothing gets formatted. Keep both installed.
@@ -98,7 +97,6 @@ The `terminalgraph` package versions `config.json` and `blueprints/`. Everything
 ├── git/                    # .gitconfig, .config/git/ignore
 ├── ghostty/                # .config/ghostty/ + shaders
 ├── starship/               # .config/starship.toml
-├── claude/                 # .claude/ + setup.sh
 ├── terminalgraph/          # .config/terminalgraph/
 ├── nvim/                   # .config/nvim (vendored)
 ├── Brewfile                # Homebrew packages
@@ -114,7 +112,6 @@ After `dots install`:
 2. **Add secrets** to `~/.zshrc.secrets` (API keys, tokens)
 3. **Apply macOS prefs** with `dots macos` (optional)
 4. **Set Ghostty** as default terminal
-5. **Run `claude/setup.sh`** to link Claude Code agents, commands, and skills
 
 ## Secrets
 
